@@ -1,0 +1,19 @@
+services:
+  web:
+    build: ./nextjs-docker/.
+    ports:
+      - "3000:3000"
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+    ports:
+      - "5432:5432"
+  api:
+    build: ./backend_docker/.
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
