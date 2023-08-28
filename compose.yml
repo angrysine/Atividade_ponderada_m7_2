@@ -1,8 +1,13 @@
 services:
   web:
-    build: ./nextjs-docker/.
+    image: angrysine/frontend_todo_list
+
     ports:
       - "3000:3000"
+
+    depends_on:
+      - api
+      - db
 
   db:
     image: postgres
@@ -12,7 +17,7 @@ services:
     ports:
       - "5432:5432"
   api:
-    build: ./backend_docker/.
+    image: angrysine/backend_todo_list
     ports:
       - "5000:5000"
 

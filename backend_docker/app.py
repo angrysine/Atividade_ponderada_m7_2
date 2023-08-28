@@ -14,10 +14,12 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 SECRET_KEY = "secret"
 origins = [
-    "http://localhost:3000",
+    "*",
 
 ]
 
+ 
+ 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -25,6 +27,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
 
 #dialect[+driver]://user:password@host/dbname[?key=value..]
 engine = create_engine('postgresql://postgres:example@db:5432/postgres')
@@ -92,13 +96,13 @@ def get_tasks(dict:dict = Depends(verify_token)):
     
     with engine.connect() as conn:
         result = conn.execute(text("select * from tasks;"))
-     
+        #returns all tasks
         l = []
         for row in result:
-            l.append(row)
+            l.append({"task_name":row[1],"long_description":row[2],"short_description":row[3],"task_end_date":row[4],"task_start_date":row[5],"link":row[6]})
+        return l
 
-        return str(l)
-        # return [dict(row) for row in result]
+        
     
 @app.post("/tasks")
 def create_task(dict: dict,a= Depends(verify_token)):
