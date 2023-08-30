@@ -20,6 +20,7 @@ services:
     image: angrysine/backend_todo_list
     ports:
       - "5000:5000"
+    restart: always
 
     depends_on:
       - db
